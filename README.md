@@ -16,9 +16,11 @@ El sistema detecta patrones de compra cruzada (Market Basket) para prevenir quie
 Los grandes distribuidores B2B de repuestos automotrices enfrentan dos fugas masivas de capital:
 1. **Capital Inmovilizado:** Millones de dolares atrapados en sobrestock por malas políticas de reabastecimiento.
 2. **Efecto Dominó (Lost Sales):** Pérdida de ventas corporativas masivas porque falta un sólo componente (ej. un empaque dentro de un gran pedido de reparación (Kit).
+
 Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simulaciones de Cadena de Suministro (Supply Chain).
 
 ---
+
 ## 📁 Dataset & Data Quality
 
 | Atributo | Detalle |
@@ -28,6 +30,7 @@ Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simula
 | **Variables Clave** | SKU, Transaccion_ID, Categoría, Costos (FOB/Nacionalizado), PVP Facturado. |
 | **Data Governance** | Limpieza de outliers, eliminación de devoluciones nulas, y re-mapeo semántico (Pareto 80/20). |
 
+---
 
 ## 🏗️ Arquitectura de Datos (Data Stack)
 * **Data Lake / Storage:** Google Drive (Cloud Storage)
@@ -36,6 +39,17 @@ Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simula
 * **Capa Semántica y BI:** Looker Studio (SQL Views)
 * **Machine Learning (Fase 3):** Algoritmo FP-Growth (Optimización de memoria para matrices esparsas corporativas) para extracción de Reglas de Asociación B2B, con ingesta automatizada de de vuelta hacia BigQuery.
 
+---
+## 🗄️ Estructura del Data Lake (Medallion Architecture)
+
+El procesamiento de datos sigue un enfoque de arquitectura por capas antes de su ingesta en el Data Warehouse:
+
+* 🥉 **Capa Bronze (Raw):** Almacenamiento de logs transaccionales históricos (+450,000 registros). Datos sucios con devoluciones nulas, outliers de precios y sin catalogación semántica.
+* 🥈 **Capa Silver (Wrangling & Cleansing):** Procesamiento en Python/Pandas. Imputación de nulos, limpieza de valores atipicos mediante rangos intercuartílicos (IQR) y re-mapeo semántico para emular la dominancia de marcas asiáticas en el parque automotor hispanoamericano (Pareto 80/20).
+* 🥇 **Capa Gold (Curated & AI Enriched):** Generación de la topología Star Schema (`Dim_Producto`, `Dim_Bodega`, `Fact_Ventas`). Aquí se inyectan las métricas calculadas por los motores de Machine Learning (ROP, SS, Reglas de Asociación) listas para lectura OLAP en BigQuery.
+
+---
+
 ## 🧠 Modelos Matemáticos Implementados
 1. **Weighted Hashing Semántico:** Transformación probabilística de datos genéricos a categorías automotrices respetando la ley de Pareto del mercado (35% Frenos, 25% Suspensión, etc.).
 2. **Modelo de Croston:** Cálculo avanzado de demanda intermitente (ADI) para fijar Puntos de Reorden (ROP) y Stocks de Seguridad (SS) realistas en entornos B2B.
@@ -43,13 +57,55 @@ Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simula
 4. **Digital Twin (Simulación de Eventos Discretos):** Motor en Python que viaja en el tiempo para recrear el Kardex histórico, descontando ventas diarias y simulando tiempos de tránsito (Lead Time marítimo) para calcular con exactitud el GMROI y el capital inmovilizado real mes a mes.
 5. **FP-Growth (Market Basket Analysis Avanzado):** Superando las limitaciones computacionales de Apriori *($0(2^n)$)*, este modelo procesa matrices binarias masivas para descubrir reglas ocultas de compra cruzada B2B, entregando predicciones de Up-Selling basadas en métricas de Confianza y Lift.
 
-## 🗂️ Estructura del Data Lake
-* `/01_raw`: Datos transaccionales crudos y desnormalizados.
-* `/02_processesd`: Capa Silver. Limpieza B2B, vectorización temporal y preservación de "Cestas de Compra".
-* `03_gold_star_schema`: Capa Gold. Modelo de Estrella inyectado en BigQuery (`Dim_Bodega`, `Dim_Producto`, `Fact_Ventas`).
+---
 
+## 🔬 Deep Dive Técnico: Modelos y Algoritmos
+
+Para pasar del análisis descriptivo al prescriptivo, el motor de Python ejecuta tres modelos matemáticos pesados en la Capa Silver/Gold:
+
+### 1. Gemelo Digital: Emulador de Kardex Histórico (Event-Driven)
+Se construyó un motor de Simulación de Eventos Discretos para recrear el comportamiento del inventario día a día durante 3 años.
+* **Lógica:** Iteración vectorial sobre las ventas diarias. Cuando el `Stock Actual` cruza el *Punto de Reorden (ROP)*, el algoritmo genera una "Orden de Compra" virtual.
+* **Física Logística:** Se implementó un array de *offset* de 60 días (Lead Time Asiático). El stock no se recupera al instante; el conenedor ingresa al Kardex matemáticamente dos meses después de la alerta. Esto permite calcular el *GMROI(Retorno sobre Inversión de Margen Bruto)* real mes a mes basado en el capital verdaderamente inmovilizado.
+
+### 2. Machine Learning B2B: FP-Growth (Market Basket Analysis)
+Reemplazando al algoritmo clásico *Apriori* (que sufre de explosión combinatoria), se implementó **FP-Growth** usando `mlxtend` para descubrir patrones de Up-Selling.
+* **Optimización de Memoria:** Las facturas se transformaron en matrices booleanas esparsas (One-Hot Encoding) para evitar el colapso de RAM.
+* **Hiperparámetros Tácticos:** Se limitó a `max_len=3`y `min_support=0.015`, extrayendo métricas de *Confidence* y *Lift* > 1.2. Estoasegura que la IA entregue combinaciones ágiles de  1-a-1 o 2-a-1, ideales para que los asesores comerciales ofrezcan ventas cruzadas directo al cliente sin fricción.
+
+### 3. Supply Chain Estocástico: Croston SBA + Bootstraping
+* **Demanda Intermitente:** Se utilizó la *Aproximación Syntetos-Boylan (SBA)* con un factor de suavizado $(1 - \alpha/2)$ para calcular el ROP sin sesgo positivo.
+* **Riesgo al 95%:** Mediante Monte Carlo Bootstrapping*, se ejecutaron 1,000 iteraciones aleatorias tomando muestras con reemplazo de la demanda histórica no nula, aislando el Stock de Seguridad (SS) exacto para garantizar un nivel de servicio corporativo del 95%.
+
+---
+
+## 💻 Data Engineering & Advanced SQL (BigQuery)
+
+El Data Warehouse fue diseñado separando las tablas nativas físicas de las vistas analíticas. Para evitar horas de re-cómputo en Python, el enriquecimento estratégica de la IA se realiza al vuelo usando SQL Avanzado.
+
+**Snippet: Inyección de Inteligencia Comercial a las Reglas de IA (`vw_motor_ia_enriquecido`)**
+```sql
+SELECT
+  ia.antecedents AS El_Cliente_Pide,
+  ia.consequents AS La_IA_Recomienda,
+  p.categoría AS Categoria_Recomendada,
+  P.Clasificacion_ABC AS Rotacion_Recomendada,
+  (p.PVP_Referencial_USD - p.Costo_Nacionalizado_USD) AS Margen_Unitario,
+  ROUND(ia.confidence, 4) AS Probabilidad_de_Cierre,
+  ROUND(ia.lift, 2) AS Fuerza_Conexion_Lift
+FROM `analyticsretail-777.inventario_auto_synth.ML_Reglas_Asociacion` ia
+LEFT JOIN `analyticsretail-777.inventario_auto_synth.Dim_Producto_Nativa` p
+  ON ia.consequents LIKE CONCAT(%, p.Nombre_Repuesto, '%')
+-- Filtro táctico: Excluimos canastas complejas para dejar reglas puras de 1 a 1
+WQHERE ia.antecedents NOT LIKE '%+%' AND ia.consequents NOT LIKE '%+%'
+-- Funciones de ventana para desduplicar matches del LIKE
+QUALIFY ROW_NUMBER() OVER(PARTITION BY ia.antecedents, ia.consequents ORDER BY p.Clasificacion_ABC ASC) = 1;
+```
+---
 ## Emulación de Streaming (Live POS)
 Para demostrar la capacidad de reacción de los tableros, el proyecto incluye un emulador de punto de venta (POS) en Python. Este script funciona bajo la capa gratuita de GCP usando **Micro-Batching** (LoadJobConfig con WRITE_APPEND) para inyectar transacciones en tiempo real a BigQuery. Cuenta con compuertas lógicas que respetan el horario comercial (8 AM - 6 PM) y reglas de descuento automático por volumen. 
+
+---
 
 ## 📊 Tableros de Control (Looker Studio)
 
@@ -76,7 +132,14 @@ Este proyecto fue auditado bajo la óptica de tres pilares gerenciales (Finanzas
 * **Cuantificación del "Efecto Dominó" B2B (Visión Supply Chain):** El análisis histórico demostró que el quiebre de stock en piezas económicas (ej. empaques o pernos) bloquea la venta de componentes principales de alto margen (Kits de Motor). El uso del modelo de demanda **Croston SBA y Bootstrapping de Monte Carlo** permitió recalibrar el Stock de Seguridad aislando el riesgo real al 95% de nivel de servicio, previniendo fugas masivas por "Kits Paralizados".
 * **Up-Selling Híbrido IA + ABC (Visión CCO):** El Market Basket Analysis (FP-Growth) expuso el comportamiento real del comprador mayorista: compras combinadas para flotas multimarca (Ej. *Embragues Nissan* arrastran *Pastillas Chevrolet*). El valor táctico radicó en inyectar SQL a estas reglas para priorizarlas financieramente. Ahora, si un cliente pide un *Top Seller* (Clase A), el motor recomienda un producto de Clase C con alta fuerza de conexión (Lift), usando el producto ancla para liquidar estratégicamente el stock inmovilizado.
 
-## 💡 Habilidades Demostradas (Skills)
+---
+
+## 🚀 Roadmap y Próximos Pasos
+
+* **Fase 1 (Actual):** Ecosistema B2B Mayorista consolidado End-to-End sobre Google Cloud (BigQuery + Looker Studio).
+* **Fase 2 (En Desarrollo):** Transición a modelo Retail/B2C. Implementación de Data Extracts para despliegue de analítica visual profunda, cohortes y embudos de conversión utilizando Tableau.
+
+## 💡 Tech Stack
 `Python` `Data Engineering` `Google BigQuery` `Star Schema Data Modeling` `Looker Studio` `Machine Learning (FP-Growth)` `Market Basket Analysis` `Supply Chain Analytics (Croston)` `Financial KPIs (GMROI)` `SQL Avanzado` `Business Storytelling`
 
 ---
