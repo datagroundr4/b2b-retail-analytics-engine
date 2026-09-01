@@ -55,7 +55,7 @@ Para demostrar la capacidad de reacción de los tableros, el proyecto incluye un
 
 🔗 **[Ver Tablero Interactivo en Vivo -> Looker Studio](https://datastudio.google.com/s/grzLsum0LrA)**
 
-![Dashboard Overview](assets/dashboards/Captura de pantalla 2026-08-31 173641.png) 
+![Dashboard Overview](/assets/dashboards/tablero_01.png) 
 
 Este cuadro de mando integral está estructurado en **4 páginas** cohesivas diseñadas para responder a diferentes perfiles gerenciales:
 
