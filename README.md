@@ -143,4 +143,8 @@ Este proyecto fue auditado bajo la óptica de tres pilares gerenciales (Finanzas
 `Python` `Data Engineering` `Google BigQuery` `Star Schema Data Modeling` `Looker Studio` `Machine Learning (FP-Growth)` `Market Basket Analysis` `Supply Chain Analytics (Croston)` `Financial KPIs (GMROI)` `SQL Avanzado` `Business Storytelling`
 
 ---
+
+<FollowUp label="¿El README quedó listo en tu repositorio?" query="El README técnico y de negocios está publicado en mi repositorio. ¡Estoy listo para cerrar este proyecto B2B y planificar el salto a Tableau para la Fase 2 B2C!"/>
+
+---
 *Desarrollado por Juan Fernando Mosquera A. para Dataground | Construyendo arquitecturas que deciden.*
