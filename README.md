@@ -15,7 +15,7 @@ El sistema detecta patrones de compra cruzada (Market Basket) para prevenir quie
 ## 🎯 Problema de Negocio
 Los grandes distribuidores B2B de repuestos automotrices enfrentan dos fugas masivas de capital:
 1. **Capital Inmovilizado:** Millones de dolares atrapados en sobrestock por malas políticas de reabastecimiento.
-2. **Efecto Dominó (Lost Sales):** Pérdida de ventas corporativas masivas porque falta un sólo componente (ej. un empaque dentro de un gran pedido de reparación (Kit).
+2. **Efecto Dominó (Lost Sales):** Pérdida de ventas corporativas masivas porque falta un sólo componente (ej. un empaque) dentro de un gran pedido de reparación (Kit).
 
 Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simulaciones de Cadena de Suministro (Supply Chain).
 
@@ -37,7 +37,7 @@ Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simula
 * **ETL & Data Wrangling:** Python (Pandas, Numpy) / Google Colab
 * **Data Warehouse:** Google BigQuery (Esquema de Estrella / Star Schema)
 * **Capa Semántica y BI:** Looker Studio (SQL Views)
-* **Machine Learning (Fase 3):** Algoritmo FP-Growth (Optimización de memoria para matrices esparsas corporativas) para extracción de Reglas de Asociación B2B, con ingesta automatizada de de vuelta hacia BigQuery.
+* **Machine Learning:** Algoritmo FP-Growth (Optimización de memoria para matrices esparsas corporativas) para extracción de Reglas de Asociación B2B, con ingesta automatizada de de vuelta hacia BigQuery.
 
 ---
 ## 🗄️ Estructura del Data Lake (Medallion Architecture)
@@ -55,7 +55,7 @@ El procesamiento de datos sigue un enfoque de arquitectura por capas antes de su
 2. **Modelo de Croston:** Cálculo avanzado de demanda intermitente (ADI) para fijar Puntos de Reorden (ROP) y Stocks de Seguridad (SS) realistas en entornos B2B.
 3. **Cross-Selling Risk Logic:** Motores SQL auto-gestionados para detectar "Efecto Dominó" (pérdida de ingresos por falta de componentes en un kit de reparación).
 4. **Digital Twin (Simulación de Eventos Discretos):** Motor en Python que viaja en el tiempo para recrear el Kardex histórico, descontando ventas diarias y simulando tiempos de tránsito (Lead Time marítimo) para calcular con exactitud el GMROI y el capital inmovilizado real mes a mes.
-5. **FP-Growth (Market Basket Analysis Avanzado):** Superando las limitaciones computacionales de Apriori *($0(2^n)$)*, este modelo procesa matrices binarias masivas para descubrir reglas ocultas de compra cruzada B2B, entregando predicciones de Up-Selling basadas en métricas de Confianza y Lift.
+5. **FP-Growth (Market Basket Analysis Avanzado):** Superando las limitaciones computacionales de Apriori `($0(2^n)$)`, este modelo procesa matrices binarias masivas para descubrir reglas ocultas de compra cruzada B2B, entregando predicciones de Up-Selling basadas en métricas de Confianza y Lift.
 
 ---
 
@@ -66,12 +66,12 @@ Para pasar del análisis descriptivo al prescriptivo, el motor de Python ejecuta
 ### 1. Gemelo Digital: Emulador de Kardex Histórico (Event-Driven)
 Se construyó un motor de Simulación de Eventos Discretos para recrear el comportamiento del inventario día a día durante 3 años.
 * **Lógica:** Iteración vectorial sobre las ventas diarias. Cuando el `Stock Actual` cruza el *Punto de Reorden (ROP)*, el algoritmo genera una "Orden de Compra" virtual.
-* **Física Logística:** Se implementó un array de *offset* de 60 días (Lead Time Asiático). El stock no se recupera al instante; el conenedor ingresa al Kardex matemáticamente dos meses después de la alerta. Esto permite calcular el *GMROI(Retorno sobre Inversión de Margen Bruto)* real mes a mes basado en el capital verdaderamente inmovilizado.
+* **Física Logística:** Se implementó un array de *offset* de 60 días (Lead Time Asiático). El stock no se recupera al instante; el contenedor ingresa al Kardex matemáticamente dos meses después de la alerta. Esto permite calcular el *GMROI(Retorno sobre Inversión de Margen Bruto)* real mes a mes basado en el capital verdaderamente inmovilizado.
 
 ### 2. Machine Learning B2B: FP-Growth (Market Basket Analysis)
 Reemplazando al algoritmo clásico *Apriori* (que sufre de explosión combinatoria), se implementó **FP-Growth** usando `mlxtend` para descubrir patrones de Up-Selling.
 * **Optimización de Memoria:** Las facturas se transformaron en matrices booleanas esparsas (One-Hot Encoding) para evitar el colapso de RAM.
-* **Hiperparámetros Tácticos:** Se limitó a `max_len=3`y `min_support=0.015`, extrayendo métricas de *Confidence* y *Lift* > 1.2. Estoasegura que la IA entregue combinaciones ágiles de  1-a-1 o 2-a-1, ideales para que los asesores comerciales ofrezcan ventas cruzadas directo al cliente sin fricción.
+* **Hiperparámetros Tácticos:** Se limitó a `max_len=3`y `min_support=0.015`, extrayendo métricas de *Confidence* y *Lift* > 1.2. Esto asegura que la IA entregue combinaciones ágiles de  1-a-1 o 2-a-1, ideales para que los asesores comerciales ofrezcan ventas cruzadas directo al cliente sin fricción.
 
 ### 3. Supply Chain Estocástico: Croston SBA + Bootstraping
 * **Demanda Intermitente:** Se utilizó la *Aproximación Syntetos-Boylan (SBA)* con un factor de suavizado $(1 - \alpha/2)$ para calcular el ROP sin sesgo positivo.
@@ -128,7 +128,7 @@ Este cuadro de mando integral está estructurado en **4 páginas** cohesivas dis
 
 Este proyecto fue auditado bajo la óptica de tres pilares gerenciales (Finanzas, Logística y Ventas), arrojando los siguientes diagnósticos accionables a partir de los datos sintéticos B2B:
 
-* **El Costo Oculto de la "Seguridad" Logística (Visión CFO):** La Torre de Control reveló una Cobertura de Inventario global de de ~149 días y (8.1 meses). Aunque en un entorno B2B asiático un *Lead Time* de 60 días justifica un *buffer*, operar al doble de la necesidad inmoviliza más de $300,000 USD en flujo de caja. Al cruzar esto con la clasificación ABC, se detectó que el exceso de capital no está en los repuestos estrella, sino en una larga cola de productos Clase C que requieren liquidación inmediata para sanear el GMROI.
+* **El Costo Oculto de la "Seguridad" Logística (Visión CFO):** La Torre de Control reveló una Cobertura de Inventario global de de ~149 días (8.1 meses). Aunque en un entorno B2B asiático un *Lead Time* de 60 días justifica un *buffer*, operar al doble de la necesidad inmoviliza más de $300,000 USD en flujo de caja. Al cruzar esto con la clasificación ABC, se detectó que el exceso de capital no está en los repuestos estrella, sino en una larga cola de productos Clase C que requieren liquidación inmediata para sanear el GMROI.
 * **Cuantificación del "Efecto Dominó" B2B (Visión Supply Chain):** El análisis histórico demostró que el quiebre de stock en piezas económicas (ej. empaques o pernos) bloquea la venta de componentes principales de alto margen (Kits de Motor). El uso del modelo de demanda **Croston SBA y Bootstrapping de Monte Carlo** permitió recalibrar el Stock de Seguridad aislando el riesgo real al 95% de nivel de servicio, previniendo fugas masivas por "Kits Paralizados".
 * **Up-Selling Híbrido IA + ABC (Visión CCO):** El Market Basket Analysis (FP-Growth) expuso el comportamiento real del comprador mayorista: compras combinadas para flotas multimarca (Ej. *Embragues Nissan* arrastran *Pastillas Chevrolet*). El valor táctico radicó en inyectar SQL a estas reglas para priorizarlas financieramente. Ahora, si un cliente pide un *Top Seller* (Clase A), el motor recomienda un producto de Clase C con alta fuerza de conexión (Lift), usando el producto ancla para liquidar estratégicamente el stock inmovilizado.
 
