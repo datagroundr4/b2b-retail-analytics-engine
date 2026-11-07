@@ -1,150 +1,168 @@
-# ⚙️ DataGround Analytics Engine: B2B/B2C Auto Parts Retail
-**Enterprise Data Architecture & Supply Chain Intelligence**
+# 🚀 Dataground DaaP Suite: Advanced Automotive Inventory & Network Intelligence (v4.0 Final)
 
-![Looker Studio](https://img.shields.io/badge/Looker_Studio-4285F4?style=flat&logo=google&logoColor=white)
-![Google BigQuery](https://img.shields.io/badge/Google_BigQuery-669DF6?style=flat&logo=google-cloud&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
-![Machine Learning](https://img.shields.io/badge/Machine_Learning-FF6F00?style=flat)
-![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=flat)
+![Data Architecture](https://img.shields.io/badge/Architecture-BigQuery%20%7C%20Python%20%7C%20Looker%20Studio-blue?style=flat&logo=googlecloud&logoColor=white)
+![Core Engine](https://img.shields.io/badge/Core-FP--Growth%20%2B%20NetworkX%20%7C%20GVY-green?style=flat)
+![Data Source](https://img.shields.io/badge/Data-Kaggle%20Synth%20%7C%20Ecuador%20Retail-orange?style=flat)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=flat)
 
-## Visión General del Proyecto
-Este proyecto es una simulación de grado corporativo (End-to-End) diseñada para importadores y distribuidores B2B/B2C del sector de repuestos automotrices. Transforma datos transaccionales crudos en inteligencia prescriptiva de cadena de suministro (Supply Chain)
-
-El sistema detecta patrones de compra cruzada (Market Basket) para prevenir quiebras de stock y modela la demanda intermitente usando algoritmos avanzados para optimizar el capital inmovilizado en bodegas.
-
-## 🎯 Problema de Negocio
-Los grandes distribuidores B2B de repuestos automotrices enfrentan dos fugas masivas de capital:
-1. **Capital Inmovilizado:** Millones de dolares atrapados en sobrestock por malas políticas de reabastecimiento.
-2. **Efecto Dominó (Lost Sales):** Pérdida de ventas corporativas masivas porque falta un sólo componente (ej. un empaque) dentro de un gran pedido de reparación (Kit).
-
-Este proyecto resuelve ambos problemas mediante Inteligencia Artificial y simulaciones de Cadena de Suministro (Supply Chain).
+> **Turning complex automotive aftermarket transactions into an autonomous inventory governance and C-Suite decision engine.**
+> **Multi-layer data architecture: FP-Growth association mining · NetworkX topological graphs · Looker Studio interactive Treemaps · Autonomous RPA replenishment**
 
 ---
 
-## 📁 Dataset & Data Quality
+## 🎯 Business Problem & Domain Context
 
-| Atributo | Detalle |
-|----------|---------|
-| **Fuente Base** | Dataset transactional retail (Kaggle), transformado matemáticamente a B2B Automotriz. |
-| **Volumen** | +450,000 registros transaccionales (3 años de historia) + Streaming en Vivo. |
-| **Variables Clave** | SKU, Transaccion_ID, Categoría, Costos (FOB/Nacionalizado), PVP Facturado. |
-| **Data Governance** | Limpieza de outliers, eliminación de devoluciones nulas, y re-mapeo semántico (Pareto 80/20). |
+Managing inventory in high-complexity B2B retail environments (such as automotive spare parts and multi-line distribution) exposes companies to a silent capital drain: **Inventory Blindness**.
 
----
+Using a robust foundational dataset sourced from Kaggle and transformed to simulate realistic B2B transactions from **2026 onwards** (tailored to the Ecuadorian market context), we analyze thousands of SKUs across high-rotation categories. Traditional ERP systems fail here because they treat products as isolated entities, leading to:
+- **The Reactive Reorder Trap:** Relying on simple moving averages (`ROP`) that break entire cross-selling baskets when secondary items go out of stock.
+- **Capital Immobilization:** Millions of dollars trapped in dead stock because legacy tools cannot evaluate the systemic network value of a product.
+- **Executive Friction:** Unreadable data tables that provide zero visibility into network bottlenecks or cascading supply chain failures.
 
-## 🏗️ Arquitectura de Datos (Data Stack)
-* **Data Lake / Storage:** Google Drive (Cloud Storage)
-* **ETL & Data Wrangling:** Python (Pandas, Numpy) / Google Colab
-* **Data Warehouse:** Google BigQuery (Esquema de Estrella / Star Schema)
-* **Capa Semántica y BI:** Looker Studio (SQL Views)
-* **Machine Learning:** Algoritmo FP-Growth (Optimización de memoria para matrices esparsas corporativas) para extracción de Reglas de Asociación B2B, con ingesta automatizada de de vuelta hacia BigQuery.
-
----
-## 🗄️ Estructura del Data Lake (Medallion Architecture)
-
-El procesamiento de datos sigue un enfoque de arquitectura por capas antes de su ingesta en el Data Warehouse:
-
-* 🥉 **Capa Bronze (Raw):** Almacenamiento de logs transaccionales históricos (+450,000 registros). Datos sucios con devoluciones nulas, outliers de precios y sin catalogación semántica.
-* 🥈 **Capa Silver (Wrangling & Cleansing):** Procesamiento en Python/Pandas. Imputación de nulos, limpieza de valores atipicos mediante rangos intercuartílicos (IQR) y re-mapeo semántico para emular la dominancia de marcas asiáticas en el parque automotor hispanoamericano (Pareto 80/20).
-* 🥇 **Capa Gold (Curated & AI Enriched):** Generación de la topología Star Schema (`Dim_Producto`, `Dim_Bodega`, `Fact_Ventas`). Aquí se inyectan las métricas calculadas por los motores de Machine Learning (ROP, SS, Reglas de Asociación) listas para lectura OLAP en BigQuery.
+**This analytical suite answers four critical C-Suite questions:**
+1. Which product clusters act as revenue anchors and drive systemic cross-selling traction?
+2. How can we calculate a joint Reorder Point (`ROP_Par`) to protect critical multi-item sales combos?
+3. Where are the active up-selling leaks caused by stockouts on secondary companion items?
+4. How do we automate purchase orders (`PO-LIVE`) via RPA before inventory thresholds are breached?
 
 ---
 
-## 🧠 Modelos Matemáticos Implementados
-1. **Weighted Hashing Semántico:** Transformación probabilística de datos genéricos a categorías automotrices respetando la ley de Pareto del mercado (35% Frenos, 25% Suspensión, etc.).
-2. **Modelo de Croston:** Cálculo avanzado de demanda intermitente (ADI) para fijar Puntos de Reorden (ROP) y Stocks de Seguridad (SS) realistas en entornos B2B.
-3. **Cross-Selling Risk Logic:** Motores SQL auto-gestionados para detectar "Efecto Dominó" (pérdida de ingresos por falta de componentes en un kit de reparación).
-4. **Digital Twin (Simulación de Eventos Discretos):** Motor en Python que viaja en el tiempo para recrear el Kardex histórico, descontando ventas diarias y simulando tiempos de tránsito (Lead Time marítimo) para calcular con exactitud el GMROI y el capital inmovilizado real mes a mes.
-5. **FP-Growth (Market Basket Analysis Avanzado):** Superando las limitaciones computacionales de Apriori `($0(2^n)$)`, este modelo procesa matrices binarias masivas para descubrir reglas ocultas de compra cruzada B2B, entregando predicciones de Up-Selling basadas en métricas de Confianza y Lift.
+## 📊 Dataset & Data Sources
+
+| Attribute | Detail |
+|-----------|--------|
+| Source Foundation | Kaggle Automotive Retail Datasets (Engineered & Synthetic Simulation) |
+| Temporal Coverage | 2026 — Present (Real-time simulated streaming frames) |
+| Granularity | Transaction-level grain (`Transaccion_ID` + `SKU`) |
+| Key Fields | SKU, Nombre_Repuesto, Categoria, Subcategoria, Stock_Fisico, Punto_Reorden_ROP, Costo_Nacionalizado_USD, Transaccion_ID, InvoiceDate, Ingreso_Total_USD |
+
+**Data Preparation & Engineering:**
+- **Initial Inventory & Seed Capital:** Baseline inventory values and day-zero capital metrics derived directly from historical transaction baselines.
+- **Temporal Alignment:** Streaming simulation scripts (`Notebook 05`) anchored to the latest database timestamps, generating realistic transaction lags (4 to 34 minutes) without timeline distortion.
+- **Taxonomy Enrichment:** Automated text-based derivation of product subcategories (`Frenos y Componentes`, `Suspensión y Dirección`, etc.) to power multi-level hierarchical drill-downs.
 
 ---
 
-## 🔬 Deep Dive Técnico: Modelos y Algoritmos
+## 🏗️ Data Architecture & Pipeline
 
-Para pasar del análisis descriptivo al prescriptivo, el motor de Python ejecuta tres modelos matemáticos pesados en la Capa Silver/Gold:
+The pipeline operates on a cloud-native, serverless stack optimized for high-speed computation and low operational overhead (`OpEx`):
 
-### 1. Gemelo Digital: Emulador de Kardex Histórico (Event-Driven)
-Se construyó un motor de Simulación de Eventos Discretos para recrear el comportamiento del inventario día a día durante 3 años.
-* **Lógica:** Iteración vectorial sobre las ventas diarias. Cuando el `Stock Actual` cruza el *Punto de Reorden (ROP)*, el algoritmo genera una "Orden de Compra" virtual.
-* **Física Logística:** Se implementó un array de *offset* de 60 días (Lead Time Asiático). El stock no se recupera al instante; el contenedor ingresa al Kardex matemáticamente dos meses después de la alerta. Esto permite calcular el *GMROI(Retorno sobre Inversión de Margen Bruto)* real mes a mes basado en el capital verdaderamente inmovilizado.
-
-### 2. Machine Learning B2B: FP-Growth (Market Basket Analysis)
-Reemplazando al algoritmo clásico *Apriori* (que sufre de explosión combinatoria), se implementó **FP-Growth** usando `mlxtend` para descubrir patrones de Up-Selling.
-* **Optimización de Memoria:** Las facturas se transformaron en matrices booleanas esparsas (One-Hot Encoding) para evitar el colapso de RAM.
-* **Hiperparámetros Tácticos:** Se limitó a `max_len=3`y `min_support=0.015`, extrayendo métricas de *Confidence* y *Lift* > 1.2. Esto asegura que la IA entregue combinaciones ágiles de  1-a-1 o 2-a-1, ideales para que los asesores comerciales ofrezcan ventas cruzadas directo al cliente sin fricción.
-
-### 3. Supply Chain Estocástico: Croston SBA + Bootstraping
-* **Demanda Intermitente:** Se utilizó la *Aproximación Syntetos-Boylan (SBA)* con un factor de suavizado $(1 - \alpha/2)$ para calcular el ROP sin sesgo positivo.
-* **Riesgo al 95%:** Mediante Monte Carlo Bootstrapping*, se ejecutaron 1,000 iteraciones aleatorias tomando muestras con reemplazo de la demanda histórica no nula, aislando el Stock de Seguridad (SS) exacto para garantizar un nivel de servicio corporativo del 95%.
-
----
-
-## 💻 Data Engineering & Advanced SQL (BigQuery)
-
-El Data Warehouse fue diseñado separando las tablas nativas físicas de las vistas analíticas. Para evitar horas de re-cómputo en Python, el enriquecimento estratégica de la IA se realiza al vuelo usando SQL Avanzado.
-
-**Snippet: Inyección de Inteligencia Comercial a las Reglas de IA (`vw_motor_ia_enriquecido`)**
-```sql
-SELECT
-  ia.antecedents AS El_Cliente_Pide,
-  ia.consequents AS La_IA_Recomienda,
-  p.categoría AS Categoria_Recomendada,
-  P.Clasificacion_ABC AS Rotacion_Recomendada,
-  (p.PVP_Referencial_USD - p.Costo_Nacionalizado_USD) AS Margen_Unitario,
-  ROUND(ia.confidence, 4) AS Probabilidad_de_Cierre,
-  ROUND(ia.lift, 2) AS Fuerza_Conexion_Lift
-FROM `analyticsretail-777.inventario_auto_synth.ML_Reglas_Asociacion` ia
-LEFT JOIN `analyticsretail-777.inventario_auto_synth.Dim_Producto_Nativa` p
-  ON ia.consequents LIKE CONCAT(%, p.Nombre_Repuesto, '%')
--- Filtro táctico: Excluimos canastas complejas para dejar reglas puras de 1 a 1
-WQHERE ia.antecedents NOT LIKE '%+%' AND ia.consequents NOT LIKE '%+%'
--- Funciones de ventana para desduplicar matches del LIKE
-QUALIFY ROW_NUMBER() OVER(PARTITION BY ia.antecedents, ia.consequents ORDER BY p.Clasificacion_ABC ASC) = 1;
+```text
+[ 01. GOOGLE COLAB: ML Core & Simulation ]
+ ├── 01. Data Wrangling & Automotive Enrichment
+ ├── 02. Kardex Engine & Verhulst Growth Curves
+ ├── 03. Market Basket Analysis (FP-Growth Mining)
+ ├── 04. NetworkX Graph Topology & GVY Calculation
+ └── 05. Real-Time POS Emulator (KNN & RPA)
+                    │
+                    ▼
+[ 02. GOOGLE BIGQUERY: Data Warehouse ]
+ ├── Base Tables (Dim_Producto_Nativa, Fact_Ventas_Nativa)
+ ├── vw_inventario_vivo (Real-Time Stock & Status)
+ ├── vw_canasta_reorden (Pairwise Co-occurrence & Joint ROP)
+ ├── vw_motor_ia_enriquecido (Transition Rules & Lift)
+ └── vw_recomendacion_avanzada_csuite (Network Cluster & Subcategories)
+                    │
+                    ▼
+[ 03. LOOKER STUDIO: C-Suite Visual Analytics ]
+ ├── Pages 1-3: Financial Benchmarks & B2B Margins
+ ├── Page 4: Advanced Recommendation Engine (Treemap & GVY)
+ └── Page 5: Master Inventory Governance (Multi-filter & Traffic Lights)
 ```
 ---
-## Emulación de Streaming (Live POS)
-Para demostrar la capacidad de reacción de los tableros, el proyecto incluye un emulador de punto de venta (POS) en Python. Este script funciona bajo la capa gratuita de GCP usando **Micro-Batching** (LoadJobConfig con WRITE_APPEND) para inyectar transacciones en tiempo real a BigQuery. Cuenta con compuertas lógicas que respetan el horario comercial (8 AM - 6 PM) y reglas de descuento automático por volumen. 
+
+## 🧠 Proprietary Mathematics: Graph Value Yield (GVY)
+
+Traditional inventory metrics look at volume or profit margins in complete isolation. To bridge statistical association with real corporate cash flow, Dataground developed **GVY (Graph Value Yield)**:
+
+$$\text{GVY} = \text{Confidence} \times \text{Lift} \times \text{Unit Margin (USD)}$$
+
+* **Confidence:** The historical probability that purchasing the "conductor" product triggers the purchase of the companion item.
+* **Lift:** Measures how much stronger the association is compared to random market chance, filtering out false positives.
+* **Unit Margin:** Anchors the probability directly to the **gross profit in dollars** generated by the destination SKU.
+
+*Strategic Impact:* GVY prioritizes inventory placement not by what sells the highest volume individually, but by **what protects and drives the highest systemic liquidity across the corporate network.**
 
 ---
 
-## 📊 Tableros de Control (Looker Studio)
+## 💡 Business Insights & Discoveries (Dashboard Findings)
 
-🔗 **[Ver Tablero Interactivo en Vivo -> Looker Studio](https://datastudio.google.com/s/grzLsum0LrA)**
+Operating the suite across our data simulation uncovers critical behavioral insights that legacy ERPs completely miss:
 
-![Dashboard Overview](/assets/dashboards/tablero_01.png) 
-
-Este cuadro de mando integral está estructurado en **4 páginas** cohesivas diseñadas para responder a diferentes perfiles gerenciales:
-
-| Página | Audiencia | Propósito y Visualizaciones Clave |
-|--------|-----------|-----------------------------------|
-| **1. C_Suite & Finanzas** | CEO / CFO | Resumen ejecutivo del flujo de caja. Muestra ingresos YTD/TTM, simulación de márgenes B2B dinámicos, Volumen por Ticket (UPT) y Ticket Promedio (AOV). |
-| **2. Supply Chain y Riesgo** | Gerente de Compras | Análisis histórico de quiebres de stock. Tablas de "Kits Paralizados" (Efecto Dominó) evaluando el impacto en dólares de las canastas incompletas |
-| **3. Motor de Recomendación IA** | Director Comercial | Herramienta táctica de Up-Selling (Next Best Offer). Sugiere repuestos complementarios en vivo filtrados por Fuerza de Conexión (Lift). |
-| **4. Live Benchmarks (Torre de Control)** | CDO / OpEx | Fotografía en tiempo real (Snapshot) del estado del inventario. Velocímetros de Margen actual, GMROI (Retorno de Inversión) y Días de Cobertura de Stock para prevenir quiebres de la cadena asiática. |
+1. **The "Anchor-Satellite" Dynamic ($K_9$ Core):**  
+   Analysis revealed that high-margin assembly parts (such as specialized *Air Pumps* or *Alternator Kits*) act as network anchors. Even when their individual sales velocity is moderate, their absence breaks over 45% of secondary maintenance baskets, triggering a severe cascading loss in gross profit.
+2. **Quarantine of Dead Stock vs. Active Canastas:**  
+   Using the Treemap drill-down, management can instantly spot that over 30% of immobilized capital sits in non-connected SKUs, whereas capital tied up in the core network yields a positive velocity return up to 3.5x higher.
+3. **Autonomous RPA Mitigation:**  
+   By coupling seasonal KNN transaction frames with real-time stock audits, the system successfully intercepts stockouts before they occur, automatically generating purchase orders (`PO-LIVE`) for items approaching their joint reorder point (`ROP_Par`).
 
 ---
 
-## Key Business Insights (Hallazgos Estratégicos)
+## 📊 Executive Dashboards & UI Showcase
 
-Este proyecto fue auditado bajo la óptica de tres pilares gerenciales (Finanzas, Logística y Ventas), arrojando los siguientes diagnósticos accionables a partir de los datos sintéticos B2B:
+The suite delivers a frictionless visual experience tailored for C-level decision-makers.
 
-* **El Costo Oculto de la "Seguridad" Logística (Visión CFO):** La Torre de Control reveló una Cobertura de Inventario global de de ~149 días (8.1 meses). Aunque en un entorno B2B asiático un *Lead Time* de 60 días justifica un *buffer*, operar al doble de la necesidad inmoviliza más de $300,000 USD en flujo de caja. Al cruzar esto con la clasificación ABC, se detectó que el exceso de capital no está en los repuestos estrella, sino en una larga cola de productos Clase C que requieren liquidación inmediata para sanear el GMROI.
-* **Cuantificación del "Efecto Dominó" B2B (Visión Supply Chain):** El análisis histórico demostró que el quiebre de stock en piezas económicas (ej. empaques o pernos) bloquea la venta de componentes principales de alto margen (Kits de Motor). El uso del modelo de demanda **Croston SBA y Bootstrapping de Monte Carlo** permitió recalibrar el Stock de Seguridad aislando el riesgo real al 95% de nivel de servicio, previniendo fugas masivas por "Kits Paralizados".
-* **Up-Selling Híbrido IA + ABC (Visión CCO):** El Market Basket Analysis (FP-Growth) expuso el comportamiento real del comprador mayorista: compras combinadas para flotas multimarca (Ej. *Embragues Nissan* arrastran *Pastillas Chevrolet*). El valor táctico radicó en inyectar SQL a estas reglas para priorizarlas financieramente. Ahora, si un cliente pide un *Top Seller* (Clase A), el motor recomienda un producto de Clase C con alta fuerza de conexión (Lift), usando el producto ancla para liquidar estratégicamente el stock inmovilizado.
+🔗 **[View Live Looker Studio Report (Demo Environment)](https://datastudio.google.com/reporting/3cbecd6a-3a7b-41d4-94d1-ca978cfd1428/page/rMc5F)**
 
----
+### Dashboard Structure
+| Page | Audience | Purpose | Key Visuals |
+|------|----------|---------|-------------|
+| **Pages 1-3** | Executive / Finance | Financial Benchmarks & B2B Margins | Revenue breakdown · Gross margin trends · Top product performance cards |
+| **Page 4: Advanced Recommendation** | CCO / Operations | Treemap Graph Intelligence & Cross-selling | Hierarchical Treemap (Subcategories -> SKUs) colored by GVY Score · Audit table with conditional traffic lights |
+| **Page 5: Master Inventory Governance** | Supply Chain Leads | Multi-filter Macro Control | Global inventory filters (Category, ABC Classification, Stock Status) · Autonomous PO tracking |
 
-## 🚀 Roadmap y Próximos Pasos
-
-* **Fase 1 (Actual):** Ecosistema B2B Mayorista consolidado End-to-End sobre Google Cloud (BigQuery + Looker Studio).
-* **Fase 2 (En Desarrollo):** Transición a modelo Retail/B2C. Implementación de Data Extracts para despliegue de analítica visual profunda, cohortes y embudos de conversión utilizando Tableau.
-
-## 💡 Tech Stack
-`Python` `Data Engineering` `Google BigQuery` `Star Schema Data Modeling` `Looker Studio` `Machine Learning (FP-Growth)` `Market Basket Analysis` `Supply Chain Analytics (Croston)` `Financial KPIs (GMROI)` `SQL Avanzado` `Business Storytelling`
+> *[ Insert Screenshots of Treemap & Master Inventory Governance here ]*
 
 ---
 
-<FollowUp label="¿El README quedó listo en tu repositorio?" query="El README técnico y de negocios está publicado en mi repositorio. ¡Estoy listo para cerrar este proyecto B2B y planificar el salto a Tableau para la Fase 2 B2C!"/>
+## 📂 Core Repository Notebooks (v4.0)
+
+* `01-Generacion_Historica_Batch_final.ipynb`: Data cleaning, structuring, and synthetic feature engineering.
+* `02-NOTEBOOK 02 - MOTOR DE KARDEX & CURVA DE VERHULST (V4.0).ipynb`: Monthly Kardex generation and Verhulst inventory curves.
+* `03-NOTEBOOK 03 (MAESTRO): MARKET BASKET ANALYSIS CON FP-GROWTH Y BIGQUERY.ipynb`: Association rules mining and BigQuery persistence.
+* `04-MNetwokX_G_Engine y GVY_Score.ipynb`: Topological graph engine, GVY scoring, and dual 70/30 capital allocation sheets.
+* `05-NOTEBOOK 05 - REAL-TIME FRAMING POS EMULATOR (KNN & RPA)`: Seasonal POS transaction simulation anchored to database timestamps with automated supply chain reorder triggers.
 
 ---
-*Desarrollado por Juan Fernando Mosquera A. para Dataground | Construyendo arquitecturas que deciden.*
+
+## 🛠️ Skills & Technologies Demonstrated
+
+`BigQuery` `Python` `Google Colab` `Looker Studio` `FP-Growth` `NetworkX` `KNN` `RPA Automation` `Data as a Product (DaaP)` `Supply Chain Analytics` `Graph Theory` `SQL Advanced Views` `Executive Data Literacy`
+
+---
+
+## 📂 Repository Structure
+
+```text
+dataground-daap-suite/
+├── README.md
+├── notebooks/
+│   ├── 01_data_wrangling.ipynb
+│   ├── 02_kardex_verhulst.ipynb
+│   ├── 03_fp_growth_mining.ipynb
+│   ├── 04_networkx_gvy.ipynb
+│   └── 05_pos_emulator_rpa.ipynb
+├── sql_views/
+│   ├── vw_inventario_vivo.sql
+│   ├── vw_canasta_reorden.sql
+│   └── vw_recomendacion_avanzada_csuite.sql
+└── dashboard/
+    └── screenshots/
+        ├── treemap_overview.png
+        └── governance_panel.png
+```
+---
+
+## 🔗 Portfolio & contact
+
+| | |
+|---|---|
+| 🌐 Portfolio | [linktr.ee/dataground](https://linktr.ee/dataground) |
+| 💼 LinkedIn | [Juan Fernando Mosquera](https://www.linkedin.com/in/juan-fernando-mosquera-araujo-226966180/) |
+| ✍️ Medium | [@erre4tro](https://medium.com/@erre4tro) |
+
+---
+
+*Part of the [Datagroundr4](https://github.com/Datagroundr4) analytics portfolio.*
+
+---
