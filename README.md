@@ -104,6 +104,8 @@ The suite delivers a frictionless visual experience tailored for C-level decisio
 
 🔗 **[View Live Looker Studio Report (Demo Environment)](https://datastudio.google.com/reporting/3cbecd6a-3a7b-41d4-94d1-ca978cfd1428/page/rMc5F)**
 
+![Vista General del Tablero C-Suite](assets/dashboards/tablero_01_2026-11-07%20180928.png)
+
 ### Dashboard Structure
 | Page | Audience | Purpose | Key Visuals |
 |------|----------|---------|-------------|
